@@ -1,4 +1,4 @@
-# MazeShooter
+# MazeShooting
 
 ## 製作期間
 
