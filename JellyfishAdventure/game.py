@@ -3,7 +3,7 @@ from settings import *
 import os
 
 
-from sprites import Jellyfish, Obstacle, Seaweed, Sunfish, Turtle, PlasticWaste, make_transparent
+from sprites import Jellyfish, Obstacle, Seaweed, Sunfish, Turtle, PlasticWaste, make_transparent, Bubble
 import random
 
 class Game:
@@ -18,6 +18,7 @@ class Game:
 
         self.all_sprites = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
+        self.bubbles = pygame.sprite.Group() # 泡グループ追加
         self.stage = 1
         
         # アセットの読み込み
@@ -102,13 +103,54 @@ class Game:
             path = os.path.join(assets_dir, filename)
             if os.path.exists(path):
                 img = pygame.image.load(path).convert_alpha()
-                img = pygame.transform.scale(img, (400, 320)) # 画像サイズを大きく
+                img = pygame.transform.scale(img, (500, 400)) # 画像サイズをさらに大きく
                 self.death_images[cause] = make_transparent(img)
             else:
                 self.death_images[cause] = None
 
 
 
+
+        try:
+            pygame.mixer.init()
+            self.sound_enabled = True
+        except:
+            print("Sound init failed")
+            self.sound_enabled = False
+            
+        # 効果音読み込み
+        self.sounds = {}
+        if self.sound_enabled:
+            sound_files = {
+                'dash': 'dash.wav',
+                'hit': 'hit.wav',
+                'clear': 'clear.wav',
+                'gameover': 'gameover.wav'
+            }
+            sound_dir = os.path.join(assets_dir, "sounds")
+            for name, filename in sound_files.items():
+                path = os.path.join(sound_dir, filename)
+                if os.path.exists(path):
+                    try:
+                        self.sounds[name] = pygame.mixer.Sound(path)
+                        self.sounds[name].set_volume(0.5)
+                    except:
+                        print(f"Failed to load sound: {filename}")
+        
+    def play_sound(self, name):
+        if self.sound_enabled and name in self.sounds:
+            self.sounds[name].play()
+
+    def play_bgm(self, filename):
+        if self.sound_enabled:
+            path = os.path.join(os.path.dirname(__file__), "assets", "sounds", filename)
+            if os.path.exists(path):
+                try:
+                    pygame.mixer.music.load(path)
+                    pygame.mixer.music.set_volume(0.4)
+                    pygame.mixer.music.play(-1) # ループ再生
+                except:
+                    print(f"Failed to load BGM: {filename}")
 
     def new_game(self):
         # プレイヤー配置（画面下部中央からスタート）
@@ -340,11 +382,33 @@ class Game:
         self.all_sprites.update()
         self.spawn_obstacle()
         
+        # 泡の生成
+        # 通常時：ランダムに少し出す
+        if random.random() < 0.1:
+            bubble = Bubble(self.player.rect.center, speed_y=random.uniform(1, 3))
+            self.all_sprites.add(bubble)
+            self.bubbles.add(bubble)
+            
+        # ダッシュ判定：playerの速度が大きいとき
+        if self.player.vel.length() > 3:
+            # 音を鳴らす（連続再生防止のため確率で間引くか、タイマー管理がベストだが簡易的に）
+            if random.random() < 0.1: 
+                self.play_sound('dash')
+                
+            # たくさん出す
+            for _ in range(2):
+                offset = (random.randint(-10, 10), random.randint(-10, 10))
+                pos = (self.player.rect.centerx + offset[0], self.player.rect.centery + offset[1])
+                bubble = Bubble(pos, speed_y=random.uniform(2, 5), size=random.randint(3, 8))
+                self.all_sprites.add(bubble)
+                self.bubbles.add(bubble)
+        
         # 衝突判定
         if not self.player.invincible:
             hits = pygame.sprite.spritecollide(self.player, self.obstacles, False, pygame.sprite.collide_mask)
             if hits:
                 self.player.hp -= 1
+                self.play_sound('hit')
                 self.player.invincible = True
                 self.player.invincible_timer = pygame.time.get_ticks()
                 
@@ -413,6 +477,9 @@ class Game:
         pygame.display.flip()
 
     def stage_clear_scene(self):
+        # クリア音再生
+        self.play_sound('clear')
+        
         # ステージクリア画面
         waiting = True
         while waiting:
@@ -452,6 +519,9 @@ class Game:
             pygame.display.flip()
 
     def game_over_scene(self):
+        # ゲームオーバー音再生
+        self.play_sound('gameover')
+        
         # 障害物別のメッセージ
         death_messages = {
             'seaweed': ["うわ～～、絡まって動けないーー！", "海藻に絡まってしまった..."],
@@ -575,6 +645,9 @@ class Game:
             pygame.display.flip()
 
     def game_clear_scene(self):
+        # クリア音再生
+        self.play_sound('clear')
+        
         # ゲームクリア画面（2段階）
         # 第1段階：空を見た感動
         waiting = True

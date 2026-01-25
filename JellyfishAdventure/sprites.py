@@ -1,8 +1,7 @@
 import pygame
 import math
 from settings import *
-
-
+import random
 import os
 
 def make_transparent(surface, threshold=230):
@@ -235,6 +234,38 @@ class PlasticWaste(Obstacle):
         self.rect.y += self.fall_speed
         self.rect.x += self.drift_speed  # 横に流れる
         if self.rect.top > SCREEN_HEIGHT or self.rect.left > SCREEN_WIDTH:
+            self.kill()
+
+
+class Bubble(pygame.sprite.Sprite):
+    def __init__(self, pos, speed_y=2, size=None):
+        super().__init__()
+        if size:
+            self.radius = size
+        else:
+            self.radius = random.randint(2, 6)
+            
+        self.image = pygame.Surface((self.radius * 2, self.radius * 2), pygame.SRCALPHA)
+        # 半透明の白い円
+        pygame.draw.circle(self.image, (255, 255, 255, 150), (self.radius, self.radius), self.radius)
+        self.rect = self.image.get_rect(center=pos)
+        
+        self.pos = pygame.math.Vector2(pos)
+        self.vel = pygame.math.Vector2(random.uniform(-0.5, 0.5), -speed_y)
+        self.timer = 0
+        self.life_time = random.randint(60, 120) # フレーム数
+
+    def update(self):
+        self.pos += self.vel
+        self.pos.x += math.sin(self.timer * 0.1) * 0.5 # ゆらゆら
+        self.rect.center = self.pos
+        
+        self.timer += 1
+        if self.timer > self.life_time:
+            self.kill()
+        
+        # 画面外に出たら消える
+        if self.rect.bottom < 0:
             self.kill()
 
 
