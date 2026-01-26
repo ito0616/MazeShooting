@@ -23,4 +23,4 @@ FRICTION = 0.93           # 摩擦（減衰） (修正: 0.95 -> 0.93)
 
 # ゲーム設定
 PLAYER_START_HP = 3
-OBSTACLE_SPAWN_RATE = 1500 # ミリ秒
+OBSTACLE_SPAWN_RATE = 1000 # ミリ秒
