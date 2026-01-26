@@ -1,4 +1,4 @@
-# MazeShooter
+# JellyfishAdventure
 
 ## 製作期間
 
