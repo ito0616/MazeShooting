@@ -34,9 +34,9 @@ wasdや矢印ボタンで動かさないようにすることで、 ビューン
 
 ### sampleimage
 
-<img src="https://github.com/ito0616/syasin/sample_title.png" alt="sample" title="sample">
-<img src="https://github.com/ito0616/syasin/sample_explain.png" alt="sample" title="sample">
-<img src="https://github.com/ito0616/syasin/sample_playground.png" alt="sample" title="sample">
-<img src="https://github.com/ito0616/syasin/sample_swim.png" alt="sample" title="sample">
-<img src="https://github.com/ito0616/syasin/sample_dead1.png" alt="sample" title="sample">
-<img src="https://github.com/ito0616/syasin/sample_dead2.png" alt="sample" title="sample">
+<img src="https://ito0616.github.io/syasin/sample_title.png" alt="sample" title="sample">
+<img src="https://ito0616.github.io/syasin/sample_explain.png" alt="sample" title="sample">
+<img src="https://ito0616.github.io/syasin/sample_playground.png" alt="sample" title="sample">
+<img src="https://ito0616.github.io/syasin/samole_swim.png" alt="sample" title="sample">
+<img src="https://ito0616.github.io/syasin/sample_dead1.png" alt="sample" title="sample">
+<img src="https://ito0616.github.io/syasin/sample_dead2.png" alt="sample" title="sample">
