@@ -27,6 +27,16 @@ wasdや矢印ボタンで動かさないようにすることで、 ビューン
 <li>海洋ごみ : ごみなので海を漂っています。</li>
 <li>亀 : 同じ方向をだらだらと泳いでいます。</li>
 <li>マンボウ : 積極的にクラゲを食べようと追ってきます。</li> 
-天敵に倒されたらその天敵によって演出が違うようにしました。
-イラストは生成AIを活用して、作りました。
-タイトル画面も作りました。ゲームオーバーしたときはｒを押すとリスタート、エンターだとタイトル画面に戻る、ｑでゲーム終了をすることができます。
+天敵に倒されたらその天敵によって演出が違うようにしました。  
+イラストは生成AIを活用して、作りました。  
+タイトル画面も作りました。ゲームオーバーしたときはｒを押すとリスタート、エンターだとタイトル画面に戻る、  
+ｑでゲーム終了をすることができます。
+
+### sampleimage
+
+<img src="https://github.com/ito0616/syasin/sample_title.png" alt="sample" title="sample">
+<img src="https://github.com/ito0616/syasin/sample_explain.png" alt="sample" title="sample">
+<img src="https://github.com/ito0616/syasin/sample_playground.png" alt="sample" title="sample">
+<img src="https://github.com/ito0616/syasin/sample_swim.png" alt="sample" title="sample">
+<img src="https://github.com/ito0616/syasin/sample_dead1.png" alt="sample" title="sample">
+<img src="https://github.com/ito0616/syasin/sample_dead2.png" alt="sample" title="sample">
